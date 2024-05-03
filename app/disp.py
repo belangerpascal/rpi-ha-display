@@ -54,11 +54,12 @@ def update_display():
     ) as client:
 
         # Get the current weather
-        weather = client.get_state("weather.home")
+        weather = client.get_state("weather.condo")
 
-        # Draw the weather state on the display
-        weather_info = f"Weather: {weather.state}"
+        # Draw the weather state and the corresponding MDI icon on the display
+        weather_info = f"Weather: {weather.state}, Icon: {weather.attributes['icon']}"
         draw1.text((0, 0), weather_info, fill=(255, 255, 255))
+
 
     # Display the buffer
     disp.image(buffer1)
