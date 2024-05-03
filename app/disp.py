@@ -54,7 +54,7 @@ def update_display():
     ) as client:
 
         # Get the current weather
-        weather = client.get_state("weather.condo")
+        weather = client.get_entity("weather.condo")
 
         # Draw the weather state and the corresponding MDI icon on the display
         weather_info = f"Weather: {weather.state}, Icon: {weather.attributes['icon']}"
