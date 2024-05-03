@@ -90,9 +90,8 @@ def update_display():
 
 try:
     print("Looping")
-    while True:
-        update_display()
-        time.sleep(REFRESH_RATE)
+    update_display()
+    time.sleep(REFRESH_RATE)
 except KeyboardInterrupt:
     print("Loop interrupted by user.")
 finally:
