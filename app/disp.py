@@ -61,7 +61,7 @@ def update_display():
 
         # Loop through each entity and draw its state on the display
         for entity in entities:
-            entity_info = f"Entity ID: {entity['entity_id']}, State: {entity['state']}"
+            entity_info = f"Entity ID: {entity.entity_id}, State: {entity.state}"
             draw1.text((0, y), entity_info, fill=(255, 255, 255))
             y += 10  # Increase the y coordinate for the next entity
 
@@ -77,5 +77,4 @@ try:
 except KeyboardInterrupt:
     print("Loop interrupted by user.")
 finally:
-    pin7.close()
     print("Exiting program.")
