@@ -1,4 +1,3 @@
-psutil
 adafruit-circuitpython-framebuf
 matplotlib
 Pillow

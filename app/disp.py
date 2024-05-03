@@ -1,11 +1,10 @@
 from collections import deque
-import psutil
 import board
 import digitalio
 from adafruit_rgb_display.st7789 import ST7789
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')  # Use the 'ggplot' style
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 from gpiozero import Device, Button, PWMLED
 import time
 
