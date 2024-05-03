@@ -40,6 +40,24 @@ buffer2 = Image.new('RGB', (280, 240))
 draw1 = ImageDraw.Draw(buffer1)
 draw2 = ImageDraw.Draw(buffer2)
 
+weather_icons = {
+    'clear-night': 'weather-night',
+    'cloudy': 'weather-cloudy',
+    'fog': 'weather-fog',
+    'hail': 'weather-hail',
+    'lightning': 'weather-lightning',
+    'lightning-rainy': 'weather-lightning-rainy',
+    'partlycloudy': 'weather-partly-cloudy',
+    'pouring': 'weather-pouring',
+    'rainy': 'weather-rainy',
+    'snowy': 'weather-snowy',
+    'snowy-rainy': 'weather-snowy-rainy',
+    'sunny': 'weather-sunny',
+    'windy': 'weather-windy',
+    'windy-variant': 'weather-windy-variant',
+    'exceptional': 'alert-circle-outline'
+}
+
 def update_display():
     global draw1, draw2, buffer1, buffer2
 
@@ -56,8 +74,11 @@ def update_display():
 
         weather = client.get_state(entity_id="weather.forecast_the_condo")
 
+        # Get the MDI name for the current weather state
+        mdi_name = weather_icons.get(weather.state, 'question-mark-circle-outline')
+
         # Draw the weather state and the corresponding MDI icon on the display
-        weather_info = f"Weather: {weather.state}, Icon: {weather.attributes['icon']}"
+        weather_info = f"Weather: {weather.state}, Icon: {mdi_name}"
         draw1.text((0, 0), weather_info, fill=(255, 255, 255))
 
     # Display the buffer
