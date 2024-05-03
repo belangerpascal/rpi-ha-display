@@ -53,13 +53,12 @@ def update_display():
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1ZWM1MTJmODI1MGM0NDNkODM4MTZlNDhkYjdiODBkMCIsImlhdCI6MTcxMzU1OTg4NSwiZXhwIjoyMDI4OTE5ODg1fQ.Qh-mQlLjSjVAvOoRn1fugUayHlzg-GNKYiZtS1XDYMc'
     ) as client:
 
-        # Get the current weather
-        weather = client.get_entity(entity_id="weather.forecast_the_condo")
+
+        weather = client.get_state(entity_id="weather.forecast_the_condo")
 
         # Draw the weather state and the corresponding MDI icon on the display
         weather_info = f"Weather: {weather.state}, Icon: {weather.attributes['icon']}"
         draw1.text((0, 0), weather_info, fill=(255, 255, 255))
-
 
     # Display the buffer
     disp.image(buffer1)
