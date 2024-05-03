@@ -53,17 +53,12 @@ def update_display():
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1ZWM1MTJmODI1MGM0NDNkODM4MTZlNDhkYjdiODBkMCIsImlhdCI6MTcxMzU1OTg4NSwiZXhwIjoyMDI4OTE5ODg1fQ.Qh-mQlLjSjVAvOoRn1fugUayHlzg-GNKYiZtS1XDYMc'
     ) as client:
 
-        # Get all entities
-        entities = client.get_states()
+        # Get the current weather
+        weather = client.get_state("weather.home")
 
-        # Define a starting point for the y coordinate
-        y = 0
-
-        # Loop through each entity and draw its state on the display
-        for entity in entities:
-            entity_info = f"Entity ID: {entity.entity_id}, State: {entity.state}"
-            draw1.text((0, y), entity_info, fill=(255, 255, 255))
-            y += 10  # Increase the y coordinate for the next entity
+        # Draw the weather state on the display
+        weather_info = f"Weather: {weather.state}"
+        draw1.text((0, 0), weather_info, fill=(255, 255, 255))
 
     # Display the buffer
     disp.image(buffer1)
