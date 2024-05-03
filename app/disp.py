@@ -1,6 +1,4 @@
 from collections import deque
-import os
-import sys
 import psutil
 import board
 import digitalio
@@ -10,26 +8,8 @@ plt.style.use('ggplot')  # Use the 'ggplot' style
 from PIL import Image, ImageDraw, ImageFont
 from gpiozero import Device, Button, PWMLED
 import time
-import socket
-import platform
-#import docker
-#dockerClient = docker.DockerClient()
 
 from homeassistant_api import Client
-
-with Client(
-    'https://ha.belangerlab.ca/api',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1ZWM1MTJmODI1MGM0NDNkODM4MTZlNDhkYjdiODBkMCIsImlhdCI6MTcxMzU1OTg4NSwiZXhwIjoyMDI4OTE5ODg1fQ.Qh-mQlLjSjVAvOoRn1fugUayHlzg-GNKYiZtS1XDYMc'
-) as client:
-
-    light = client.get_domain("light")
-
-    light.turn_on(entity_id="light.living_room_lamp")
-
-#    weather = client.get_domain("weather")
-
-    forecast = client,get_state("weather.forecast_the_condo")
-
 
 backlight_pin = 18
 backlight = PWMLED(backlight_pin)
@@ -61,48 +41,33 @@ buffer2 = Image.new('RGB', (280, 240))
 draw1 = ImageDraw.Draw(buffer1)
 draw2 = ImageDraw.Draw(buffer2)
 
-#def getContainers():
-#    containersReturn = []
-#    containers = dockerClient.containers.list()
-#    for container in containers:
-#        if ("ceph" not in container.name):
-#          containersReturn.append(container.name.split(".", 1)[0])
-#    return containersReturn
-
-def update_data_disk():
-    global draw1, draw2, buffer1, buffer2, prev_disk_activity
+def update_display():
+    global draw1, draw2, buffer1, buffer2
 
     # Redefine draw1 and draw2 after swapping buffers
     draw1, draw2 = draw2, draw1
     buffer1, buffer2 = buffer2, buffer1
     draw1 = ImageDraw.Draw(buffer1)
 
-    # Get the current disk activity
-    disk_activity = psutil.disk_io_counters()
+    with Client(
+        'https://ha.belangerlab.ca/api',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1ZWM1MTJmODI1MGM0NDNkODM4MTZlNDhkYjdiODBkMCIsImlhdCI6MTcxMzU1OTg4NSwiZXhwIjoyMDI4OTE5ODg1fQ.Qh-mQlLjSjVAvOoRn1fugUayHlzg-GNKYiZtS1XDYMc'
+    ) as client:
 
-    # Clear the buffer
-    draw1.rectangle((0, 0, 280, 240), fill=(0, 0, 0))
+        # Get all entities
+        entities = client.get_states()
 
-    # If the disk is active, display the active image
-    if disk_activity.read_count > prev_disk_activity.read_count or disk_activity.write_count > prev_disk_activity.write_count:
-        # Resize the image to 50x50 pixels
-        small_active_image = disk_active_image.resize((50, 50))
-        # Display the image in the bottom right corner
-        buffer1.paste(small_active_image, (210, 170))
-        # Turn on the backlight
-        set_backlight_intensity(0.5)
-    else:
-        # If the disk is idle, turn off the backlight
-        set_backlight_intensity(0.5)
+        # Define a starting point for the y coordinate
+        y = 0
+
+        # Loop through each entity and draw its state on the display
+        for entity in entities:
+            entity_info = f"Entity ID: {entity['entity_id']}, State: {entity['state']}"
+            draw1.text((0, y), entity_info, fill=(255, 255, 255))
+            y += 10  # Increase the y coordinate for the next entity
 
     # Display the buffer
     disp.image(buffer1)
-
-    # Update the previous disk activity counters
-    prev_disk_activity = disk_activity
-    set_backlight_intensity(0.5)
-
-def update_display():
     
 
 try:
