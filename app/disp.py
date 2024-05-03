@@ -1,4 +1,6 @@
-from collections import deque
+import io
+from mdi import get_icon
+import cairosvg
 import board
 import digitalio
 from adafruit_rgb_display.st7789 import ST7789
@@ -80,9 +82,24 @@ def update_display():
         # Get the MDI name for the current weather state
         mdi_name = weather_icons.get(weather.state, 'question-mark-circle-outline')
 
-        # Draw the weather state and the corresponding MDI icon on the display
-        weather_info = f"Weather: {weather.state}, Icon: {mdi_name}"
+        # Get the SVG string of the MDI icon
+        svg_str = get_icon(mdi_name)
+
+        # Convert the SVG string to a PNG byte stream
+        png_byte_stream = cairosvg.svg2png(bytestring=svg_str)
+
+        # Convert the PNG byte stream to a PIL Image object
+        icon_image = Image.open(io.BytesIO(png_byte_stream))
+
+        # Resize the image to fit your ST7789 display
+        icon_image = icon_image.resize((50, 50))
+
+        # Draw the weather state on the display
+        weather_info = f"Weather: {weather.state}"
         draw1.text((0, 0), weather_info, fill=(255, 255, 255))
+
+        # Draw the icon on the display
+        buffer1.paste(icon_image, (0, 20))
 
     # Display the buffer
     disp.image(buffer1)
