@@ -1,0 +1,10 @@
+psutil
+adafruit-circuitpython-framebuf
+matplotlib
+Pillow
+adafruit-circuitpython-rgb-display
+adafruit-blinka
+lgpio
+gpiod
+gpiozero
+homeassistant_api
