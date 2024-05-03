@@ -1,7 +1,5 @@
-from collections import deque
 import os
 import sys
-import psutil
 import board
 import digitalio
 from adafruit_rgb_display.st7789 import ST7789
