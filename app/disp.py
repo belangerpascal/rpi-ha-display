@@ -61,6 +61,9 @@ weather_icons = {
 def update_display():
     global draw1, draw2, buffer1, buffer2
 
+    # Clear the display
+    disp.fill(0)
+
     # Redefine draw1 and draw2 after swapping buffers
     draw1, draw2 = draw2, draw1
     buffer1, buffer2 = buffer2, buffer1
