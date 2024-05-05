@@ -7,3 +7,5 @@ lgpio
 gpiod
 gpiozero
 homeassistant_api
+mdi
+cairosvg
